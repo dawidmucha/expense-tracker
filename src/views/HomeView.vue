@@ -1,18 +1,29 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <button @click="test">test</button>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import { collection, addDoc } from 'firebase/firestore'
+import db from '@/main'
 
 export default {
   name: 'HomeView',
-  components: {
-    HelloWorld
+  methods: {
+    async test() {
+      console.log(process.env.VUE_APP_API_KEY)
+      try {
+        console.log('waiting')
+        const docRef = await addDoc(collection(db, 'test'), {
+          this: "works",
+          i: ["hope", "it", 10035]
+        })
+        console.log('Document written with ID:', docRef)
+      } catch (e) {
+        console.error(e)
+      }
+    }
   }
 }
 </script>
