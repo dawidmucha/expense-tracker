@@ -11,6 +11,9 @@ export default {
     return {
       currentUser: getAuth().currentUser
     }
+  },
+  created() {
+    if(!this.currentUser) this.$router.push('/') // if logged out, redirect to "/"
   }
 }
 </script>
