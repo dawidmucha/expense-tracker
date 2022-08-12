@@ -10,6 +10,7 @@ export default {
 			const auth = getAuth()
 			signInWithEmailAndPassword(auth, e.target.email.value, e.target.password.value).then(userCredentials => {
 				console.log('logging in as', userCredentials.user)
+				this.$router.push('/dashboard')
 			}).catch(e => console.error(e))
 		}
 	}
