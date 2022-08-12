@@ -1,25 +1,22 @@
-<script>
-import { getAuth } from 'firebase/auth'
+<script setup>
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import LogoutForm from '@/components/LogoutForm.vue'
 import ReceiptList from '@/components/ReceiptList.vue'
 import NewReceiptForm from '@/components/NewReceiptForm.vue'
+import { ref } from 'vue'
 
-export default {
-  name: 'DashboardView',
-  components: {
-    LogoutForm,
-    ReceiptList,
-    NewReceiptForm
-},
-  data() {
-    return {
-      currentUser: getAuth().currentUser
-    }
-  },
-  created() {
-    if(!this.currentUser) this.$router.push('/') // if logged out, redirect to "/"
+
+const isLoggedIn = ref(false) 
+
+const auth = getAuth()
+onAuthStateChanged(auth, user => {
+  if(user) {
+    console.log('welcome', user)
+    isLoggedIn.value = true;
+  } else {
+    this.$router.push('/')
   }
-}
+})
 </script>
 
 <template>
@@ -27,6 +24,6 @@ export default {
     <h1>This is an dashboard page</h1>
     <ReceiptList />
     <NewReceiptForm />
-    <LogoutForm v-if="currentUser !== null" />
+    <LogoutForm v-if="isLoggedIn" />
   </div>
 </template>

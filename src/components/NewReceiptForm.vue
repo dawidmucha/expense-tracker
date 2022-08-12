@@ -29,7 +29,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 					await setDoc(doc(db, 'receipts', `${userId}`), newReceiptList)
 
-					this.$store.dispatch('addReceipt', newReceiptList)
+					e.target.shop.value = ''
 				} catch (e) { console.error(e) }
 			}
 		}
