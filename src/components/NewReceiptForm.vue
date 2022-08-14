@@ -1,39 +1,34 @@
-<script>
+<script setup>
 import { setDoc, getDoc, doc } from 'firebase/firestore'
 import db from '@/main'
 import { getAuth } from 'firebase/auth'
 import { v4 as uuidv4 } from 'uuid'
 
-	export default {
-		name: 'NewReceiptForm',
-		methods: {
-			async onNewShopAdd(e) {
-				const shopName = e.target.shop.value
-				const userId = getAuth()?.currentUser.uid
+const onNewShopAdd = async (e) => {
+	const shopName = e.target.shop.value
+	const userId = getAuth()?.currentUser.uid
 
-				try {
-					const id = uuidv4()
+	try {
+		const id = uuidv4()
 
-					// check if there are receipts already
-					const docRef = doc(db, 'receipts', `${userId}`)
-					const docSnap = await getDoc(docRef)
+		// check if there are receipts already
+		const docRef = doc(db, 'receipts', `${userId}`)
+		const docSnap = await getDoc(docRef)
 
-					const newReceiptList = {
-						...(docSnap.exists() && docSnap.data()), // if there are, spread them
-						[id]: {
-							items: [],
-							shop: shopName,
-							createdAt: Date.now()
-						}
-					}
-
-					await setDoc(doc(db, 'receipts', `${userId}`), newReceiptList)
-
-					e.target.shop.value = ''
-				} catch (e) { console.error(e) }
+		const newReceiptList = {
+			...(docSnap.exists() && docSnap.data()), // if there are, spread them
+			[id]: {
+				items: [],
+				shop: shopName,
+				createdAt: Date.now()
 			}
 		}
-	}
+
+		await setDoc(doc(db, 'receipts', `${userId}`), newReceiptList)
+
+		e.target.shop.value = ''
+	} catch (e) { console.error(e) }
+}
 </script>
 
 <template>

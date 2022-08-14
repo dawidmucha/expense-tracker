@@ -1,20 +1,16 @@
-<script>
+<script setup>
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 
-export default {
-	name: 'LoginForm',
-	methods: {
-		onLoginUser(e) {
-			console.log('login with creds', e.target.email.value, e.target.password.value)
+const onLoginUser = (e) => {
+	console.log('login with creds', e.target.email.value, e.target.password.value)
 
-			const auth = getAuth()
-			signInWithEmailAndPassword(auth, e.target.email.value, e.target.password.value).then(userCredentials => {
-				console.log('logging in as', userCredentials.user)
-				this.$router.push('/dashboard')
-			}).catch(e => console.error(e))
-		}
-	}
+	const auth = getAuth()
+	signInWithEmailAndPassword(auth, e.target.email.value, e.target.password.value).then(userCredentials => {
+		console.log('logging in as', userCredentials.user)
+		this.$router.push('/dashboard')
+	}).catch(e => console.error(e))
 }
+
 </script>
 
 <template>

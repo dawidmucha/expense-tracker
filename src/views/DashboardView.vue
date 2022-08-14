@@ -5,7 +5,6 @@ import ReceiptList from '@/components/ReceiptList.vue'
 import NewReceiptForm from '@/components/NewReceiptForm.vue'
 import { ref } from 'vue'
 
-
 const isLoggedIn = ref(false) 
 
 const auth = getAuth()

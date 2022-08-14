@@ -1,12 +1,5 @@
-<script>
-import LoginForm from '@/components/LoginForm'
-
-export default {
-  name: 'LoginView',
-  components: {
-    LoginForm
-  },
-}
+<script setup>
+import LoginForm from '@/components/LoginForm.vue'
 </script>
 
 <template>
