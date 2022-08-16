@@ -32,8 +32,8 @@ onAuthStateChanged(auth, user => {
 <template>
   <div>
     <h1>This is an dashboard page</h1>
-    <ReceiptList />
     <NewReceiptForm />
+    <ReceiptList />
     <LogoutForm v-if="isLoggedIn" />
   </div>
 </template>
