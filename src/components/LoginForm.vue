@@ -1,5 +1,24 @@
 <script setup>
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
+import { useRouter, useRoute } from 'vue-router'
+
+const route = useRoute()
+const router = useRouter()
+const pushWithQuery = (name, query) => {
+	router.push({
+		name: name,
+		query: {
+			...route[query]
+		}
+	})
+} 
+
+const auth = getAuth()
+onAuthStateChanged(auth, user => {
+  if(user) {
+    pushWithQuery('dashboard', '/dashboard')
+	}
+})
 
 const onLoginUser = (e) => {
 	console.log('login with creds', e.target.email.value, e.target.password.value)
@@ -7,7 +26,7 @@ const onLoginUser = (e) => {
 	const auth = getAuth()
 	signInWithEmailAndPassword(auth, e.target.email.value, e.target.password.value).then(userCredentials => {
 		console.log('logging in as', userCredentials.user)
-		this.$router.push('/dashboard')
+		pushWithQuery('dashboard', '/dashboard')
 	}).catch(e => console.error(e))
 }
 

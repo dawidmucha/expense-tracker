@@ -4,16 +4,27 @@ import LogoutForm from '@/components/LogoutForm.vue'
 import ReceiptList from '@/components/ReceiptList.vue'
 import NewReceiptForm from '@/components/NewReceiptForm.vue'
 import { ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+
+const route = useRoute()
+const router = useRouter()
+const pushWithQuery = (name, query) => {
+	router.push({
+		name: name,
+		query: {
+			...route[query]
+		}
+	})
+} 
 
 const isLoggedIn = ref(false) 
 
 const auth = getAuth()
 onAuthStateChanged(auth, user => {
   if(user) {
-    console.log('welcome', user)
     isLoggedIn.value = true;
   } else {
-    this.$router.push('/')
+    pushWithQuery('home', '/')
   }
 })
 </script>
