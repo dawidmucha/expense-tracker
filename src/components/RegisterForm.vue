@@ -2,14 +2,9 @@
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 
 const onCreateUser = (e) => {
-	console.log('creating users with credentials', e.target.email.value, e.target.password.value)
-	this.registered = true
-
 	const auth = getAuth()
 	createUserWithEmailAndPassword(auth, e.target.email.value, e.target.password.value).then((userCredentials) => {
 		console.log('created user', userCredentials.user)
-
-		this.$emit('registered', true)
 	}).catch(e => {
 		console.error(e)
 	})
