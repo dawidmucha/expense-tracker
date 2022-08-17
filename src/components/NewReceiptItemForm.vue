@@ -1,9 +1,8 @@
 <script setup>
-import { defineProps } from 'vue'
+import { defineProps, ref } from 'vue'
 import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, setDoc, where } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import db from '@/main'
-import { ref } from 'vue'
 
 const props = defineProps(['receiptId'])
 
