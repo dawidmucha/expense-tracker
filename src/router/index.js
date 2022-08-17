@@ -27,6 +27,11 @@ const routes = [
     name: 'settings',
     component: () => import('../views/SettingsView.vue')
   },
+  {
+    path: '/categories',
+    name: 'categories',
+    component: () => import('../views/CategoriesView.vue')
+  }
 ]
 
 const router = createRouter({
