@@ -8,17 +8,18 @@ const onNewShopAdd = async (e) => {
 	const shopName = e.target.shop.value
 	e.target.shop.value = ''
 	const userId = getAuth()?.currentUser.uid
+	const id = uuidv4()
 
 	try {
 		const newReceipt = {
-			id: uuidv4(),
+			id: id,
 			userId: userId,
 			items: [],
 			shop: shopName,
 			createdAt: Date.now()
 		}
 
-		await addDoc(collection(db, 'receipts'), newReceipt)
+		await setDoc(doc(db, 'receipts', id), newReceipt)
 	} catch (e) { console.error(e) }
 }
 </script>

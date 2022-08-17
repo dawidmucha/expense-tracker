@@ -15,7 +15,7 @@ const pushWithQuery = (name, query) => {
 			...route[query]
 		}
 	})
-} 
+}
 
 const isLoggedIn = ref(false) 
 

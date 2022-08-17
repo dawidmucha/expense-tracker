@@ -1,6 +1,6 @@
 <script setup>
 import { defineProps } from 'vue'
-import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, setDoc, where } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import db from '@/main'
 import { ref } from 'vue'
@@ -15,24 +15,21 @@ onAuthStateChanged(getAuth(), async (user) => {
 
 const onNewReceiptItemFormSubmit = async (e) => {
 	if(uid.value === undefined) return undefined
+	let newData = { items: [] }
 
 	const itemName = e.target.itemName.value
 	e.target.itemName.value = ''
 
-	const docRef = doc(db, 'receipts', uid.value)
+	const docRef = doc(db, 'receipts', props.receiptId)
 	const docSnap = await getDoc(docRef)
 	if(docSnap.exists()) {
-		const data = docSnap.data()
-		const newData = data
-		for(const [key, value] of Object.entries(data)) {
-			newData[key] = value
-			if(key === props.receiptId) {
-				newData[key].items = [...value.items, itemName]
-			}
-		}
-
-		setDoc(docRef, newData)
+		newData = docSnap.data()
+		newData.items.push(itemName)
 	}
+
+	await setDoc(docRef, newData)
+
+	console.log(newData)
 }
 </script>
 
@@ -41,5 +38,4 @@ const onNewReceiptItemFormSubmit = async (e) => {
 		<input type="text" id="itemName" name="itemName" />
 		<input type="submit" value="+" />
 	</form>
-	{{ receiptId }}
 </template>
