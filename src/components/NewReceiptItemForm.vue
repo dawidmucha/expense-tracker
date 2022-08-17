@@ -28,8 +28,6 @@ const onNewReceiptItemFormSubmit = async (e) => {
 	}
 
 	await setDoc(docRef, newData)
-
-	console.log(newData)
 }
 </script>
 
