@@ -1,5 +1,5 @@
 <script setup>
-import { setDoc, getDoc, doc } from 'firebase/firestore'
+import { setDoc, getDoc, addDoc, doc, collection } from 'firebase/firestore'
 import db from '@/main'
 import { getAuth } from 'firebase/auth'
 import { v4 as uuidv4 } from 'uuid'
@@ -10,22 +10,15 @@ const onNewShopAdd = async (e) => {
 	const userId = getAuth()?.currentUser.uid
 
 	try {
-		const id = uuidv4()
-
-		// check if there are receipts already
-		const docRef = doc(db, 'receipts', `${userId}`)
-		const docSnap = await getDoc(docRef)
-
-		const newReceiptList = {
-			...(docSnap.exists() && docSnap.data()), // if there are, spread them
-			[id]: {
-				items: [],
-				shop: shopName,
-				createdAt: Date.now()
-			}
+		const newReceipt = {
+			id: uuidv4(),
+			userId: userId,
+			items: [],
+			shop: shopName,
+			createdAt: Date.now()
 		}
 
-		await setDoc(doc(db, 'receipts', `${userId}`), newReceiptList)
+		await addDoc(collection(db, 'receipts'), newReceipt)
 	} catch (e) { console.error(e) }
 }
 </script>

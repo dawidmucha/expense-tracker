@@ -11,11 +11,11 @@ defineProps(['data'])
 
 <template>
 	<div class="receipt">
-		<h3>{{ data[1].shop + ' @ ' + dateFormat(data[1].createdAt, 'yyyy-mm-dd HH:MM:ss') }}</h3>
-		<ul :v-if="data[1].items.length >= 1">
-			<li :key="index" v-for="(receiptItem, index) in data[1].items">{{receiptItem}}</li>
+		<h3>{{ data.shop }} @ {{ dateFormat(data.createdAt, 'yyyy-mm-dd HH:MM:ss') }}</h3>
+		<ul :v-if="data.items.length >= 1">
+			<li :key="receiptItem.id" v-for="receiptItem in data.items">{{receiptItem}}</li>
 		</ul>
-		<NewReceiptItemForm :receiptId="data[0]" />
+		<NewReceiptItemForm :receiptId="data.id" />
 	</div>
 </template>
 

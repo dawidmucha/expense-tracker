@@ -1,5 +1,5 @@
 <script setup>
-import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, where } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import db from '@/main'
 import dateFormat from 'dateformat'
@@ -7,23 +7,24 @@ import { mapState } from 'vuex'
 import { ref, onMounted } from 'vue'
 import Receipt from './Receipt.vue'
 
+const receipts = ref({})
+
 onAuthStateChanged(getAuth(), async (user) => {
 	if(user) {
-		onSnapshot(doc(db, 'receipts', `${getAuth().currentUser.uid}`), doc => {
-			const dataSorted = Object.entries(doc.data()).sort((d1, d2) => {
-				return d1[1].createdAt > d2[1].createdAt ? -1 : 1
-			})
-			receipts.value = dataSorted
+		console.log('uid:', user.uid)
+		const q = query(collection(db, 'receipts'), where('userId', '==', user.uid))
+		const unsubscribe = onSnapshot(q, querySnapshot => {
+			const data = []
+			querySnapshot.forEach(datum => data.push(datum.data()))
+			receipts.value = data
 		})
 	}
 })
-
-const receipts = ref({})
 </script>
 
 <template>
 	<div>
-		<div v-bind:key="receipt.createdAt" v-for="receipt in receipts">
+		<div :key="receipt.createdAt" v-for="receipt in receipts">
 			<Receipt :data='receipt' />
 		</div>
 	</div>
