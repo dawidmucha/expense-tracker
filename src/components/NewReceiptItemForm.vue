@@ -4,6 +4,7 @@ import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, setDoc, w
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import db from '@/main'
 import { ref } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 
 const props = defineProps(['receiptId'])
 
@@ -24,7 +25,16 @@ const onNewReceiptItemFormSubmit = async (e) => {
 	const docSnap = await getDoc(docRef)
 	if(docSnap.exists()) {
 		newData = docSnap.data()
-		newData.items.push(itemName)
+		newData.items.push({
+			id: uuidv4,
+			name: itemName,
+			units: 1,
+			amount: 1,
+			amountType: 'solid',
+			isDiscount: false,
+			category: 'foo',
+			subcat: 'bar',
+		})
 	}
 
 	await setDoc(docRef, newData)
