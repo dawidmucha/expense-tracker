@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 const onNewShopAdd = async (e) => {
 	const shopName = e.target.shop.value
+	e.target.shop.value = ''
 	const userId = getAuth()?.currentUser.uid
 
 	try {
@@ -25,8 +26,6 @@ const onNewShopAdd = async (e) => {
 		}
 
 		await setDoc(doc(db, 'receipts', `${userId}`), newReceiptList)
-
-		e.target.shop.value = ''
 	} catch (e) { console.error(e) }
 }
 </script>

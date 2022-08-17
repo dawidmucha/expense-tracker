@@ -5,7 +5,7 @@ import db from '@/main'
 import dateFormat from 'dateformat'
 import { mapState } from 'vuex'
 import { ref, onMounted } from 'vue'
-import ReceiptItem from './ReceiptItem.vue'
+import Receipt from './Receipt.vue'
 
 onAuthStateChanged(getAuth(), async (user) => {
 	if(user) {
@@ -24,8 +24,7 @@ const receipts = ref({})
 <template>
 	<div>
 		<div v-bind:key="receipt.createdAt" v-for="receipt in receipts">
-			<!-- <h2>{{ receipt[1].shop + ' @ ' + dateFormat(receipt[1].createdAt, 'yyyy-mm-dd HH:MM:ss')  }}</h2> -->
-			<ReceiptItem :data='receipt' />
+			<Receipt :data='receipt' />
 		</div>
 	</div>
 </template>
