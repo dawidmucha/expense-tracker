@@ -11,7 +11,6 @@ const receipts = ref({})
 
 onAuthStateChanged(getAuth(), async (user) => {
 	if(user) {
-		console.log('uid:', user.uid)
 		const q = query(collection(db, 'receipts'), where('userId', '==', user.uid))
 		const unsubscribe = onSnapshot(q, querySnapshot => {
 			const data = []

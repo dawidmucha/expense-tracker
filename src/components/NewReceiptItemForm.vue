@@ -25,23 +25,25 @@ const onNewReceiptItemFormSubmit = async (e) => {
 	if(uid.value === undefined) return undefined
 	let newData = { items: [] }
 
-	const itemName = e.target.name.value
-	e.target.name.value = ''
+	const name = e.target.name.value
+	const price = e.target.price.value
+	const units = e.target.units.value
+	const amount = e.target.amount.value
+	const amountType = e.target.amountType.value
+	const isDiscount = e.target.isDiscount.checked
+	const category = e.target.category.value
+	const subcat = e.target.subcat.value
+
+	// reset all fields in a form
+	e.target.name.value = e.target.price.value = e.target.units.value = e.target.amount.value = e.target.amountType.value = e.target.category.value = e.target.subcat.value = ''	
+	e.target.isDiscount.checked = false
 
 	const docRef = doc(db, 'receipts', props.receiptId)
 	const docSnap = await getDoc(docRef)
 	if(docSnap.exists()) {
 		newData = docSnap.data()
 		newData.items.push({
-			id: uuidv4(),
-			name: itemName,
-			price: '4.99',
-			units: 1,
-			amount: 1,
-			amountType: 'kg',
-			isDiscount: false,
-			category: 'foo',
-			subcat: 'bar',
+			id: uuidv4(), name, price, units, amount, amountType, isDiscount, category, subcat,
 		})
 	}
 
@@ -73,10 +75,10 @@ const onSelectCategoryChange = (e) => {
 			</select>	
 		</div>
 		<div>
-			$<input type="number" id="price" name="price" />
-			(<input type="number" id="units" name="units" />
-			x<input type="number" id="amount" name="amount" />
-			<input type="number" id="amountType" name="amountType" />)
+			$<input type="number" id="price" name="price" step="any" />
+			(<input type="number" id="units" name="units" step="any" />
+			x<input type="number" id="amount" name="amount" step="any" />
+			<input type="text" id="amountType" name="amountType" step="any" />)
 			discount? <input type="checkbox" id="isDiscount" name="isDiscount" />
 		</div>
 		<input type="submit" value="+" />
