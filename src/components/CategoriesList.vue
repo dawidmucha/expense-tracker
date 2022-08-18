@@ -19,8 +19,6 @@ onAuthStateChanged(getAuth(), async (user) => {
 		}
 	})
 })
-
-
 </script>
 
 <template>

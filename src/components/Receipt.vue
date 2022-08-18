@@ -27,7 +27,11 @@ const onReceiptItemRemove = async (index) => {
 	<div class="receipt">
 		<h3>{{ data.shop }} @ {{ dateFormat(props.data.createdAt, 'yyyy-mm-dd HH:MM:ss') }}</h3>
 		<ul :v-if="props.data.items.length >= 1">
-			<li :key="receiptItem.id" v-for="(receiptItem, index) in props.data.items">{{receiptItem}}<button @click="onReceiptItemRemove(index)">X</button></li>
+			<li :key="index" v-for="(receiptItem, index) in props.data.items">
+				<h4>{{ receiptItem.name }} ({{ receiptItem.category }}/{{ receiptItem.subcat }})</h4>
+				<div>${{ receiptItem.price }} ({{ receiptItem.units }}x{{ receiptItem.amount }}{{ receiptItem.amountType }})</div>
+				<button @click="onReceiptItemRemove(index)">X</button>
+			</li>
 		</ul>
 		<NewReceiptItemForm :receiptId="data.id" />
 	</div>
