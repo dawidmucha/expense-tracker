@@ -12,15 +12,20 @@ onAuthStateChanged(getAuth(), async (user) => {
 })
 
 const onNewCategoryFormSubmit = async (e) => {
-	const categoryName = e.target.categoryName.value
-
 	if(uid.value === undefined) return undefined
+	const categoryName = e.target.categoryName.value
+	let newData = {}
 
-	// const docRef = doc(db, 'categories', uid)
-	// const docSnap = await getDoc(docRef)
-	// if(docSnap.exists()) {
-	// 	console.log(docSnap.data())
-	// }
+	const docRef = doc(db, 'categories', uid.value)
+	const docSnap = await getDoc(docRef)
+	if(docSnap.exists()) {
+		newData = {
+			...docSnap.data(),
+			[categoryName]: []
+		}
+	}
+
+	setDoc(docRef, newData)
 }
 </script>
 
