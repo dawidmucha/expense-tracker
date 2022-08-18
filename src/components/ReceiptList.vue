@@ -1,5 +1,5 @@
 <script setup>
-import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, where } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, where, deleteDoc } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import db from '@/main'
 import dateFormat from 'dateformat'
@@ -7,7 +7,7 @@ import { mapState } from 'vuex'
 import { ref, onMounted } from 'vue'
 import Receipt from './Receipt.vue'
 
-const receipts = ref({})
+const receipts = ref([])
 
 onAuthStateChanged(getAuth(), async (user) => {
 	if(user) {
@@ -19,12 +19,16 @@ onAuthStateChanged(getAuth(), async (user) => {
 		})
 	}
 })
+
+const onRemoveReceipt = (receiptId) => {
+	deleteDoc(doc(db, 'receipts', receiptId))
+}
 </script>
 
 <template>
 	<div>
 		<div :key="receipt.createdAt" v-for="receipt in receipts">
-			<Receipt :data='receipt' />
+			<Receipt :data='receipt' @onRemoveReceipt="(receiptId) => onRemoveReceipt(receiptId)" />
 		</div>
 	</div>
 </template>
