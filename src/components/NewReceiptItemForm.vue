@@ -9,6 +9,7 @@ const props = defineProps(['receiptId'])
 
 const uid = ref(undefined)
 const categories = ref({})
+const currentCategory = ref({})
 
 onAuthStateChanged(getAuth(), async (user) => {
 	if(user && (uid.value === undefined)) uid.value = getAuth().currentUser.uid
@@ -48,8 +49,13 @@ const onNewReceiptItemFormSubmit = async (e) => {
 	await setDoc(docRef, newData)
 }
 
-const getCategories = () => {
+const getCategories = () => { // without it categories.value is a Proxy and v-for doesn't like it (why?)
 	return JSON.parse(JSON.stringify(categories.value))
+}
+
+const onSelectCategoryChange = (e) => {
+	console.log('current category', e.target.value)
+	currentCategory.value = e.target.value
 }
 </script>
 
@@ -57,9 +63,14 @@ const getCategories = () => {
 	<form @submit.prevent="(e) => onNewReceiptItemFormSubmit(e)">
 		<div>
 			<input type="text" id="name" name="name" />
-				<select id="category" name="category">
-					<option v-for="category in Object.keys(getCategories())" :key="category" value="category">{{ category }}</option>
-				</select>
+			<select id="category" name="category" @change="(e) => onSelectCategoryChange(e)">
+				<option disabled selected value style="display:none">[category]</option>
+				<option v-for="category in Object.keys(getCategories())" :key="category" :value="category">{{ category }}</option>
+			</select>
+			<select id="subcat" name="subcat">
+				<option disabled selected value style="display:none">[subcategory]</option>
+				<option v-for="subcat in getCategories()[currentCategory]" :key="subcat" :value="category">{{ subcat }}</option>
+			</select>	
 		</div>
 		<div>
 			$<input type="number" id="price" name="price" />
