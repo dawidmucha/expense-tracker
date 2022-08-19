@@ -1,11 +1,13 @@
 <script setup>
-import { defineProps, ref, onMounted } from 'vue'
+import { defineProps, ref, onMounted, defineEmits } from 'vue'
 import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, setDoc, where } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import db from '@/main'
 import { v4 as uuidv4 } from 'uuid'
 
 const props = defineProps(['receiptId'])
+
+const emit = defineEmits(['getReceiptSum'])
 
 const uid = ref(undefined)
 const categories = ref({})
@@ -46,9 +48,10 @@ const onNewReceiptItemFormSubmit = async (e) => {
 			id: uuidv4(), name, price, units, amount, amountType, isDiscount, category, subcat,
 		})
 	}
-
-	console.log('adding', newData)
+	
 	await setDoc(docRef, newData)
+
+	emit('getReceiptSum')
 }
 
 const getCategories = () => { // without it categories.value is a Proxy and v-for doesn't like it (why?)
