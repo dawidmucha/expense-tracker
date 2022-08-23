@@ -4,7 +4,7 @@ import { getAuth, signOut } from 'firebase/auth'
 const onLogoutUser = () => {
 	const auth = getAuth()
 	const user = auth.currentUser
-	console.log('logging out user', user)
+	// console.log('logging out user', user)
 
 	signOut(auth).then(() => {
 		console.log('logging out')

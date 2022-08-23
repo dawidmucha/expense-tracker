@@ -12,10 +12,10 @@ const receipts = ref([])
 onAuthStateChanged(getAuth(), async (user) => {
 	if(user) {
 		const q = query(collection(db, 'receipts'), where('userId', '==', user.uid))
-		const unsubscribe = onSnapshot(q, querySnapshot => {
+		onSnapshot(q, querySnapshot => {
 			const data = []
 			querySnapshot.forEach(datum => data.push(datum.data()))
-			receipts.value = data
+			receipts.value = data.sort((a, b) => b.createdAt - a.createdAt)
 		})
 	}
 })
