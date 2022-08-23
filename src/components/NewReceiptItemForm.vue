@@ -65,8 +65,9 @@ const onSelectCategoryChange = (e) => {
 </script>
 
 <template>
-	<form @submit.prevent="(e) => onNewReceiptItemFormSubmit(e)">
+	<form @submit.prevent="(e) => onNewReceiptItemFormSubmit(e)" class="newItemForm">
 		<div>
+			<label for="name">item name:</label>
 			<input type="text" id="name" name="name" />
 			<select id="category" name="category" @change="(e) => onSelectCategoryChange(e)">
 				<option disabled selected value style="display:none">[category]</option>
@@ -77,13 +78,87 @@ const onSelectCategoryChange = (e) => {
 				<option v-for="subcat in getCategories()[currentCategory]" :key="subcat" :value="category">{{ subcat }}</option>
 			</select>	
 		</div>
-		<div>
-			$<input type="number" id="price" name="price" step="any" />
-			(<input type="number" id="units" name="units" step="any" />
-			x<input type="number" id="amount" name="amount" step="any" />
-			<input type="text" id="amountType" name="amountType" step="any" />)
-			discount? <input type="checkbox" id="isDiscount" name="isDiscount" />
+		<div class="newItemGrid">
+			<label for="price">price</label>
+			<label for="units">units</label>
+			<label for="amount">volume</label>
+
+			<div>
+				$<input type="number" id="price" name="price" step="any" />
+			</div>
+			<div>
+				(<input type="number" id="units" name="units" step="any" />
+			</div>
+			<div>
+				x<input class="volumeInput" type="number" id="amount" name="amount" step="any" />
+				<input class="volumeInput" type="text" id="amountType" name="amountType" step="any" />)
+			</div>
+			<div class="discountContainer">
+				<label for=isDiscount><input class="discountInput" type="checkbox" id="isDiscount" name="isDiscount" />discount?</label>
+			</div>	
 		</div>
+
 		<input type="submit" value="+" />
 	</form>
 </template>
+
+<style lang="scss" scoped>
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+	padding: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+	margin: 0;
+	padding: 0;
+}
+
+input[type='checkbox'] {
+    -webkit-appearance:none;
+    width:30px;
+    height:30px;
+    background:white;
+    border-radius:5px;
+    border:2px solid #555;
+}
+input[type='checkbox']:checked {
+    background: #abd;
+}
+
+/************************************************************/
+
+.newItemForm {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.newItemGrid {
+	display: grid;
+	grid-template: repeat(2, 1.5rem) / repeat(3, 4.8rem) 8rem;
+
+	.discountContainer {
+		grid-row: 1/3;
+		grid-column: 4/5;
+	}
+
+	input {
+		width: 3rem;
+		height: 1.2rem;
+	}
+
+	.volumeInput {
+		width: 1.5rem;
+	}
+
+	.discountInput {
+		width: 2rem;
+		height: 2rem;
+	}
+}
+</style>
