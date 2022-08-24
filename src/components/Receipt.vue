@@ -57,7 +57,6 @@ const onReceiptEdit = async (e) => {
 
 const finishEditing = (index) => {
 	editReceiptItem.value[index] = false
-	console.log('fnishing', index)
 }
 </script>
 
