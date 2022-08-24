@@ -13,13 +13,6 @@ const pushWithQuery = (name, query) => {
 	})
 } 
 
-const auth = getAuth()
-onAuthStateChanged(auth, user => {
-  if(user) {
-    pushWithQuery('dashboard', '/dashboard')
-	}
-})
-
 const onLoginUser = (e) => {
 	console.log('login with creds', e.target.email.value, e.target.password.value)
 
