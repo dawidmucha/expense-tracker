@@ -5,7 +5,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import db from '@/main'
 import { v4 as uuidv4 } from 'uuid'
 
-const props = defineProps(['receiptId'])
+const props = defineProps(['receiptId', 'editIndex'])
 
 const emit = defineEmits(['getReceiptSum'])
 
@@ -44,13 +44,19 @@ const onNewReceiptItemFormSubmit = async (e) => {
 	const docSnap = await getDoc(docRef)
 	if(docSnap.exists()) {
 		newData = docSnap.data()
-		newData.items.push({
-			id: uuidv4(), name, price, units, amount, amountType, isDiscount, category, subcat,
-		})
+		if(props.editIndex) { // if editing an object
+			newData.items[props.editIndex] = {
+				id: uuidv4(), name, price, units, amount, amountType, isDiscount, category, subcat,
+			}
+		} else { // if adding a new object
+			newData.items.push({
+				id: uuidv4(), name, price, units, amount, amountType, isDiscount, category, subcat,
+			})
+		}
 	}
 	
 	await setDoc(docRef, newData)
-
+	props.editIndex ? emit("finishEditing") : ''
 	emit('getReceiptSum')
 }
 
