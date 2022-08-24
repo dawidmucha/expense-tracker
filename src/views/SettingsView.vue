@@ -22,5 +22,11 @@ onAuthStateChanged(auth, user => {
 <template>
   <div>
     <h1>This is an settings page</h1>
+		<ul>
+			<li>Password reset</li>
+			<li>Remove account</li>
+			<li>Export data</li>
+			<li>change language?</li>
+		</ul>
   </div>
 </template>

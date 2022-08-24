@@ -18,11 +18,14 @@ const pushWithQuery = (name, query) => {
 }
 
 const isLoggedIn = ref(false) 
+const email = ref(undefined) 
 
 const auth = getAuth()
 onAuthStateChanged(auth, user => {
   if(user) {
-    isLoggedIn.value = true;
+    isLoggedIn.value = true
+    email.value = user.email
+    console.log(user)
   } else {
     pushWithQuery('home', '/')
   }
@@ -34,6 +37,7 @@ onAuthStateChanged(auth, user => {
     <router-link to="/dashboard">Dashboard</router-link> | 
     <router-link to="/categories">Categories</router-link> |
     <router-link to="/settings">Settings</router-link> |
+    {{ email }}
     <LogoutForm v-if="isLoggedIn" />
   </nav>
   <nav v-else>
@@ -63,14 +67,14 @@ nav {
   margin: 0 auto;
   padding: 2rem 0;
   width: 100%;
-  background-color: #128853;
+  background-color: #eb644f;
 
   a {
     font-weight: bold;
     color: #2c3e50;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: #ccc;
     }
   }
 }
