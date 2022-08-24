@@ -24,7 +24,5 @@ onAuthStateChanged(auth, user => {
 </script>
 
 <template>
-	<div class="home">
-		<button @click="test">test</button>
-	</div>
+	<div>yo yo yo</div>
 </template>

@@ -24,7 +24,6 @@ onAuthStateChanged(auth, user => {
 
 <template>
   <div>
-    <h1>This is an register page</h1>
     <RegisterForm />
   </div>
 </template>

@@ -9,6 +9,7 @@ import NewReceiptItemForm from '@/components/NewReceiptItemForm.vue'
 const props = defineProps(['data'])
 
 const receiptSum = ref(0)
+const editReceipt = ref(false)
 
 const onReceiptItemRemove = async (index) => {
 	const itemListWithoutDeleted = props.data.items.filter((item, index_) => index_ !== index)
@@ -31,11 +32,43 @@ const getReceiptSum = () => {
 	})
 	if(receiptSum.value !== currentSum) receiptSum.value = currentSum
 }
+
+const onReceiptEdit = async (e) => {
+	const date = new Date(e.target.receiptDate.value)
+
+	let newData = { shop: '', createdAt: null }
+
+	const docRef = doc(db, 'receipts', props.data.id)
+	const docSnap = await getDoc(docRef)
+	if(docSnap.exists()) {
+		newData = docSnap.data()
+		newData.shop = e.target.shopName.value
+		newData.createdAt = date.getTime()
+	}
+
+	await setDoc(docRef, newData)
+
+	console.log('filling up with', newData)
+	editReceipt.value = false
+	e.target.shopName.value = ""
+	e.target.receiptDate.value = ""
+}
 </script>
 
 <template>
 	<div class="receipt">
-		<h3>{{ data.shop }} @ {{ dateFormat(props.data.createdAt, 'yyyy-mm-dd HH:MM:ss') }} (${{ receiptSum }}) <button @click="$emit('onRemoveReceipt', props.data.id)">X</button></h3>
+		<h3 v-if="editReceipt == true">
+			<form @submit.prevent="(e) => onReceiptEdit(e)">
+				<input type="text" id="shopName" name="shopName" /> @
+				<input type="date" id="receiptDate" name="receiptDate" />
+				<input type="submit" value="&#128190;" /> <!-- floppy disk icon -->
+			</form>
+		</h3>
+		<h3 v-else>
+			{{ props.data.shop }} @ {{ dateFormat(props.data.createdAt, 'yyyy-mm-dd') }} (${{ receiptSum }}) 
+			<button @click="editReceipt = true">&#x270E; <!-- pencil icon --></button>
+			<button @click="$emit('onRemoveReceipt', props.data.id)">X</button>
+		</h3>
 		<ul :v-if="props.data.items.length >= 1">
 			<li class="receiptItem" :key="index" v-for="(receiptItem, index) in props.data.items">
 				<div><strong>{{ receiptItem.name }} ({{ receiptItem.category }}/{{ receiptItem.subcat }})</strong></div>
