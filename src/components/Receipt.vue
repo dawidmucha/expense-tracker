@@ -27,7 +27,7 @@ const onReceiptItemRemove = async (index) => {
 const getReceiptSum = () => {
 	let currentSum = 0;
 	props.data.items.map(item => {
-		currentSum += parseInt(item.price)
+		currentSum += parseFloat(item.price)
 	})
 	if(receiptSum.value !== currentSum) receiptSum.value = currentSum
 }
@@ -37,8 +37,8 @@ const getReceiptSum = () => {
 	<div class="receipt">
 		<h3>{{ data.shop }} @ {{ dateFormat(props.data.createdAt, 'yyyy-mm-dd HH:MM:ss') }} (${{ receiptSum }}) <button @click="$emit('onRemoveReceipt', props.data.id)">X</button></h3>
 		<ul :v-if="props.data.items.length >= 1">
-			<li :key="index" v-for="(receiptItem, index) in props.data.items">
-				<h4>{{ receiptItem.name }} ({{ receiptItem.category }}/{{ receiptItem.subcat }})</h4>
+			<li class="receiptItem" :key="index" v-for="(receiptItem, index) in props.data.items">
+				<div><strong>{{ receiptItem.name }} ({{ receiptItem.category }}/{{ receiptItem.subcat }})</strong></div>
 				<div>${{ receiptItem.price }} ({{ receiptItem.units }}x{{ receiptItem.amount }}{{ receiptItem.amountType }})</div>
 				<button @click="onReceiptItemRemove(index)">X</button>
 			</li>
@@ -47,9 +47,21 @@ const getReceiptSum = () => {
 	</div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .receipt {
-	margin: 2rem;
+	margin: 1rem;
 	background-color: #eee;
+	width: 30rem;
+
+	.receiptItem {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		margin: 0.5rem 0;
+
+		& > * {
+			margin: 0 0.3rem;
+		}
+	}
 }
 </style>

@@ -94,11 +94,12 @@ const onSelectCategoryChange = (e) => {
 				<input class="volumeInput" type="text" id="amountType" name="amountType" step="any" />)
 			</div>
 			<div class="discountContainer">
-				<label for=isDiscount><input class="discountInput" type="checkbox" id="isDiscount" name="isDiscount" />discount?</label>
+				<input class="discountInput" type="checkbox" id="isDiscount" name="isDiscount" />
+				<label for=isDiscount>discount?</label>
 			</div>	
 		</div>
 
-		<input type="submit" value="+" />
+		<input class="addNewItem" type="submit" value="add new item" />
 	</form>
 </template>
 
@@ -124,7 +125,7 @@ input[type='checkbox'] {
     height:30px;
     background:white;
     border-radius:5px;
-    border:2px solid #555;
+    border:1px solid #8e8f9d;
 }
 input[type='checkbox']:checked {
     background: #abd;
@@ -140,25 +141,36 @@ input[type='checkbox']:checked {
 
 .newItemGrid {
 	display: grid;
-	grid-template: repeat(2, 1.5rem) / repeat(3, 4.8rem) 8rem;
+	grid-template: 1.1rem 1.5rem / repeat(3, 4.5rem) 8rem;
 
 	.discountContainer {
 		grid-row: 1/3;
 		grid-column: 4/5;
+
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
 	}
 
 	input {
 		width: 3rem;
 		height: 1.2rem;
+		padding: 0;
 	}
 
 	.volumeInput {
-		width: 1.5rem;
+		width: 1.6rem;
 	}
 
 	.discountInput {
 		width: 2rem;
 		height: 2rem;
 	}
+}
+
+.addNewItem {
+	margin: 0.8rem;
+	padding: 0.4rem;
 }
 </style>

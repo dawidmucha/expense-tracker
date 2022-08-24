@@ -26,9 +26,17 @@ const onRemoveReceipt = (receiptId) => {
 </script>
 
 <template>
-	<div>
+	<div class="receiptList">
 		<div :key="receipt.createdAt" v-for="receipt in receipts">
 			<Receipt :data='receipt' @onRemoveReceipt="(receiptId) => onRemoveReceipt(receiptId)" />
 		</div>
 	</div>
 </template>
+
+<style lang="scss" scoped>
+.receiptList {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+</style>
