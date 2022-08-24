@@ -14,6 +14,7 @@ onAuthStateChanged(getAuth(), async (user) => {
 const onNewCategoryFormSubmit = async (e) => {
 	if(uid.value === undefined) return undefined
 	const categoryName = e.target.categoryName.value
+	e.target.categoryName.value = ""
 	let newData = {}
 
 	const docRef = doc(db, 'categories', uid.value)
